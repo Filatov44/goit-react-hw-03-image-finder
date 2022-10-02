@@ -14,16 +14,21 @@ export default class Searchbar extends Component {
   };
 
   handleChange = e => {
-    const { value, name } = e.target;
+    // const { value  } = e.target;
     this.setState({
-      [name]: value,
+       query: e.target.value ,
+      // [name]: value,
     });
   };
 
   handleSubmit = e => {
+    const { query } = this.state;
     e.preventDefault();
+    if (query.trim() === '') {
+     return
+    }
     const { onSubmit } = this.props;
-    onSubmit({ ...this.state });
+    onSubmit(query);
     this.reset();
   };
 
