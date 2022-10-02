@@ -7,7 +7,7 @@ import { StyledBaseContainer } from './SearchImages.styled';
 import { Loader } from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
 import { StyledModalImg } from 'components/Modal/Modal.styled';
-
+import ButtonLoadMore from 'components/Button/Button';
 export default class SearchImages extends Component {
   state = {
     pictures: [],
@@ -34,7 +34,7 @@ export default class SearchImages extends Component {
     });
     try {
       const data = await searchPosts(query, page);
-      console.log(data);
+      // console.log(data);
 
       this.setState(({ pictures }) => {
         return {
@@ -66,7 +66,7 @@ export default class SearchImages extends Component {
   };
 
   openModal = modalContent => {
-    console.log(modalContent);
+    // console.log(modalContent);
     const { largeImageURL, tags } = modalContent;
     this.setState({
       modalOpen: true,
@@ -75,10 +75,16 @@ export default class SearchImages extends Component {
     });
   };
 
+  loadMore = () => {
+    this.setState(({page}) => ({
+      page: page + 1,
+    }));
+  };
+
   render() {
     const { pictures, loading, error, modalOpen, largeImageURL, alt } =
       this.state;
-    const { onSearch, closeModal, openModal } = this;
+    const { onSearch, closeModal, openModal, loadMore } = this;
     const isPosts = Boolean(pictures.length);
     return (
       <StyledBaseContainer>
@@ -88,9 +94,10 @@ export default class SearchImages extends Component {
           </Modal>
         )}
         <Searchbar onSubmit={onSearch}></Searchbar>
-        {loading && <Loader />}
         {error && <p>An error has occurred. Try later</p>}
         {isPosts && <ImageGallery pictures={pictures} onClick={openModal} />}
+        {loading && <Loader />}
+        {isPosts && <ButtonLoadMore onClick={loadMore} />}
       </StyledBaseContainer>
     );
   }

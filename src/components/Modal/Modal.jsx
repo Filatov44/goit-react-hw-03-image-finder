@@ -9,17 +9,33 @@ import {
   StyledModalImgWr,
 } from './Modal.styled';
 
-const modalRoot = document.getElementById("modal-root");
+const modalRoot = document.getElementById('modal-root');
 
 export default class Modal extends Component {
+
+    componentDidMount() {
+        document.addEventListener("keydown", this.closeModal);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.closeModal);
+    }
+
+    closeModal = ({ target, currentTarget, code }) => {
+    if (target === currentTarget || code === "Escape") {
+      this.props.onClose();
+    }
+  };
+
   render() {
-      const { children, onClose } = this.props;
-      console.log( children );
+    const { closeModal } = this;
+    const { children } = this.props;
+    // console.log(children);
     return createPortal(
-      <StyledModalOverlay>
+      <StyledModalOverlay onClick={closeModal}>
         <StyledModal>
-          <StyledModalBtnClose onClick={onClose}>
-            <AiOutlineCloseCircle />
+          <StyledModalBtnClose >
+            <AiOutlineCloseCircle onClick={closeModal} />
           </StyledModalBtnClose>
           <StyledModalImgWr>{children}</StyledModalImgWr>
         </StyledModal>

@@ -14,10 +14,8 @@ export default class Searchbar extends Component {
   };
 
   handleChange = e => {
-    // const { value  } = e.target;
     this.setState({
        query: e.target.value ,
-      // [name]: value,
     });
   };
 
@@ -35,6 +33,7 @@ export default class Searchbar extends Component {
   reset() {
     this.setState({ query: '' });
   }
+
 
   searchId = nanoid();
 
