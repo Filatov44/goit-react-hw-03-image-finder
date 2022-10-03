@@ -13,9 +13,7 @@ export const StyledBaseContainer = styled.div`
   ul {
     list-style: none;
   }
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
+  
+  display: flex;
+  flex-direction: column;
 `;

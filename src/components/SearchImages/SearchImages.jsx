@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { searchPosts } from 'service/api-imageSearch';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
-
 import { StyledBaseContainer } from './SearchImages.styled';
 import { Loader } from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';

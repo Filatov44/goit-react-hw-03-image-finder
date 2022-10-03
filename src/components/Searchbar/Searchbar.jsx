@@ -15,7 +15,7 @@ export default class Searchbar extends Component {
 
   handleChange = e => {
     this.setState({
-       query: e.target.value ,
+      query: e.target.value,
     });
   };
 
@@ -23,7 +23,7 @@ export default class Searchbar extends Component {
     const { query } = this.state;
     e.preventDefault();
     if (query.trim() === '') {
-     return
+      return;
     }
     const { onSubmit } = this.props;
     onSubmit(query);
@@ -34,7 +34,6 @@ export default class Searchbar extends Component {
     this.setState({ query: '' });
   }
 
-
   searchId = nanoid();
 
   render() {
@@ -44,7 +43,7 @@ export default class Searchbar extends Component {
       <StyledHeader>
         <StyledForm onSubmit={handleSubmit}>
           <StyledSearchBtn onClick={handleSubmit} type="submit">
-            <BsSearch />
+            <BsSearch size={20} />
           </StyledSearchBtn>
           <StyledSearchInput
             onChange={handleChange}
@@ -54,7 +53,7 @@ export default class Searchbar extends Component {
             type="text"
             autocomplete="off"
             placeholder="Search images and photos"
-          />
+          ></StyledSearchInput>
         </StyledForm>
       </StyledHeader>
     );
