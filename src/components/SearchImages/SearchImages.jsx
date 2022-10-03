@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { searchPosts } from 'service/api-imageSearch';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { StyledBaseContainer } from './SearchImages.styled';
 import { Loader } from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
@@ -19,10 +22,14 @@ export default class SearchImages extends Component {
     alt: '',
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
-    if (query !== prevState.query || page !== prevState.page) {
-      this.fetchPosts(query, page);
+  componentDidUpdate(_, prevState) {
+    const { query, page, loading } = this.state;
+
+    const isNewQuery =
+      query !== prevState.query || (page === 1 && prevState.page !== 1);
+    if (isNewQuery || page !== prevState.page) {
+      isNewQuery && this.setState({ pictures: [] });
+      !loading && this.fetchPosts();
     }
   }
 
@@ -49,11 +56,8 @@ export default class SearchImages extends Component {
     }
   }
 
-  onSearch = data => {
-    this.setState({ pictures: [], page: 1 });
-    this.setState({
-      query: data,
-    });
+  onSearch = query => {
+    this.setState({ query, page: 1 });
   };
 
   closeModal = () => {
@@ -75,7 +79,7 @@ export default class SearchImages extends Component {
   };
 
   loadMore = () => {
-    this.setState(({page}) => ({
+    this.setState(({ page }) => ({
       page: page + 1,
     }));
   };
@@ -87,6 +91,7 @@ export default class SearchImages extends Component {
     const isPosts = Boolean(pictures.length);
     return (
       <StyledBaseContainer>
+        <ToastContainer autoClose={1000} />
         {modalOpen && (
           <Modal onClose={closeModal}>
             <StyledModalImg src={largeImageURL} alt={alt} />
@@ -96,7 +101,7 @@ export default class SearchImages extends Component {
         {error && <p>An error has occurred. Try later</p>}
         {isPosts && <ImageGallery pictures={pictures} onClick={openModal} />}
         {loading && <Loader />}
-        {isPosts && <ButtonLoadMore onClick={loadMore} />}
+        {isPosts && !loading && <ButtonLoadMore onClick={loadMore} />}
       </StyledBaseContainer>
     );
   }

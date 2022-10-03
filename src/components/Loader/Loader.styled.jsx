@@ -6,5 +6,5 @@ export const StyledLoader = styled.div`
   align-items: center;
   justify-content: center;
   top: 50%;
-  right: 40%
+  right: 45%
 `;
